@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  trip_id: 
+  user_id: 
+  role: MyString
+
+two:
+  trip_id: 
+  user_id: 
+  role: MyString
