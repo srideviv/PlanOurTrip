@@ -1,0 +1,33 @@
+<h1>Plan a Trip!</h1>
+<br/>
+Hello <%= @user.name %> ,
+	<%- if @trip.empty? -%>
+		You are not the admin for any trips.
+	<%- else-%>
+		You are the admin for these trips!
+		<table>
+		<% @trip.each do |trip| %>
+			<tr>
+				<td> </td>
+				<td><%= trip.name %></td>
+		</tr>
+		<% end %>
+		</table>
+	<%- end -%>
+	<br/>
+	======================================================
+	<br/>
+	<%- if @tour.empty? -%>
+		You do not have any trips planned with your friends.
+	<%- else-%>
+		Here are the trips you have planned with your friends.
+		<table>
+		<% @tour.each do |tour| %>
+			<tr>
+				<td> </td>
+				<td><%= tour.trip.name %></td>
+		</tr>
+		</table>
+		<% end %>
+	<%- end -%>
+

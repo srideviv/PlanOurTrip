@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120414143025) do
+ActiveRecord::Schema.define(:version => 20120414203235) do
 
   create_table "itineraries", :force => true do |t|
     t.integer  "trip_id"
@@ -58,6 +58,7 @@ ActiveRecord::Schema.define(:version => 20120414143025) do
     t.string   "email"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "fuid"
   end
 
 end
