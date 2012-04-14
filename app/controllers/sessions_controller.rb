@@ -14,6 +14,15 @@ class SessionsController < ApplicationController
       new_user.save
       session[:current_user] = new_user
     end
+    user = FbGraph::User.me(request.env['omniauth.auth']['credentials']['token'])
+    friends_list = Array.new
+    user.friends.each do |f|
+      temp = Friend.new
+      temp.name = f.name
+      temp.fuid = f.identifier
+      friends_list << temp
+    end
+    session[:friends_list] = friends_list
     redirect_to :controller => "user", :action => "show" , :id => session[:current_user].id
   end
 
