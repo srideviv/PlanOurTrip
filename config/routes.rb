@@ -1,6 +1,9 @@
 PlanOurTrip::Application.routes.draw do
+  #get "user/new"
+
   match '/auth/:provider/callback' => 'sessions#create'
 	resources :user
+	resources :trip
   # The priority is based upon order of creation:
   # first created -> highest priority.
   # Sample of regular route:

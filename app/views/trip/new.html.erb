@@ -1,0 +1,118 @@
+<h1>Trip#new</h1>
+
+<p>Welcome to trip planner!</p>
+<%= yield :head %>
+
+<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
+<script src = " https://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+<script src = " https://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+<script>
+	$(function() {
+		var availableFriends = <%=raw @friends.to_json %>;
+		$( "#friends" ).autocomplete({
+			source: availableFriends
+		});
+		
+		$("#add_friend").click(function(){
+			alert("Here");
+			temp = '<input type="hidden" name="friends[]" value="' + $("#friends").val() + '"/>'
+			$("#new_trip").append(temp);
+			$("#friends").val("");
+			
+		});
+		
+		
+	});
+</script>
+
+<div style="float:left">
+	<form id="new_trip" method ="post" action="/trip" >
+		Add a name to your trip
+		<input type="text" value="" name="name">
+		Add your start and destination
+		<div class="ui-widget">
+			<label for="tags">Add Friends: </label> <br />
+			<input type="text" id="friends" name="friends">
+			<input type="button" id="add_friend" value="Add">
+       
+		</div>
+		Start:
+		<input type="text" value="" name="start">
+		Destination:
+		<input type="text" value="" name="end">
+		<input type="hidden" name="id" value=<%=session[:current_user].id%> />
+		<input type="submit" value="submit">
+	</form>
+
+<div>
+<div style="float:left">
+<%= gmaps({
+       "direction"   => { "data" => { "from" => "2522 Avent Ferry Rd, Raleigh, North Carolina, USA", "to" => "Las Vegas, Nevada, USA" } ,
+	   "libraries" => ["places"]
+	   }
+            })
+ %>
+ <% content_for :scripts do %>
+    <script type="text/javascript" charset="utf-8">
+        var markersArray = [];
+        // On click, clear markers, place a new one, update coordinates in the form
+        Gmaps.map.callback = function() {
+            google.maps.event.addListener(Gmaps.map.map, 'click', function(event) {
+              //clearOverlays();
+              placeMarker(event.latLng);
+              updateFormLocation(event.latLng);
+            });
+        };
+        // Update form attributes with given coordinates
+        function updateFormLocation(latLng) {
+            $('#location_attributes_latitude').val(latLng.lat());
+            $('#location_attributes_longitude').val(latLng.lng());
+            $('#location_attributes_gmaps_zoom').val(Gmaps.map.map.getZoom());
+        }
+        // Add a marker with an open infowindow
+        function placeMarker(latLng) {
+            var marker = new google.maps.Marker({
+                position: latLng, 
+                map: Gmaps.map.map,
+                draggable: true
+            });
+            markersArray.push(marker);
+            // Set and open infowindow
+            var infowindow = new google.maps.InfoWindow({
+                content: '<div class="popup"><h2>Awesome!</h2><p></p>'
+            });
+			 geocoder.geocode({'latLng': latLng}, function(results, status) {
+				  if (status == google.maps.GeocoderStatus.OK) {
+					if (results[1]) {
+					  map.setZoom(11);
+					  marker = new google.maps.Marker({
+						  position: latlng,
+						  map: map
+					  });
+					  infowindow.setContent(results[1].formatted_address);
+					  infowindow.open(map, marker);
+					}
+				  } else {
+					alert("Geocoder failed due to: " + status);
+				  }
+				});
+            infowindow.open(Gmaps.map.map,marker);
+            // Listen to drag & drop
+            google.maps.event.addListener(marker, 'dragend', function() {
+                updateFormLocation(this.getPosition());
+            });
+        }
+        // Removes the overlays from the map
+        function clearOverlays() {
+          if (markersArray) {
+            for (var i = 0; i < markersArray.length; i++ ) {
+              markersArray[i].setMap(null);
+            }
+          }
+          markersArray.length = 0;
+        }
+    </script>
+<% end %>
+</div>
+<%= yield :scripts %>		   
+

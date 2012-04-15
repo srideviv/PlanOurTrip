@@ -52,6 +52,9 @@ GEM
       httpclient (>= 2.2.0.2)
       rack-oauth2 (>= 0.14.4)
       tzinfo
+    geocoder (1.1.0)
+    gmaps4rails (1.4.8)
+      json
     hashie (1.2.0)
     hike (1.2.1)
     httpauth (0.1)
@@ -146,6 +149,8 @@ PLATFORMS
 DEPENDENCIES
   coffee-rails (~> 3.1.1)
   fb_graph
+  geocoder
+  gmaps4rails
   jquery-rails
   omniauth
   omniauth-facebook

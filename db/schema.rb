@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120414235941) do
+ActiveRecord::Schema.define(:version => 20120415003022) do
 
   create_table "itineraries", :force => true do |t|
     t.integer  "trip_id"
@@ -50,6 +50,7 @@ ActiveRecord::Schema.define(:version => 20120414235941) do
     t.string   "role"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "fuid"
   end
 
   create_table "trips", :force => true do |t|
